@@ -8,6 +8,7 @@ const LanguageReader = () => {
     text: '',
     parsed: null,
     translated: null,
+    analysis: null,
     wordDetails: {} // 存储单词详细解析
   }]);
   const [isLoading, setIsLoading] = useState(false);
@@ -15,6 +16,8 @@ const LanguageReader = () => {
   const textareaRefs = useRef({});
   // 新增：用于弹窗显示单词详细信息
   const [selectedWord, setSelectedWord] = useState({ blockId: null, wordIdx: null });
+  const [wordDetails, setWordDetails] = useState(null);
+
 
   // 重排ID为连续自然数
   const reorderIds = (blocks) => {
@@ -148,33 +151,10 @@ const handleAnalyze = async (blockId) => {
     return;
   }
 
-  // 第二步：逐个查询单词详情（文本格式）
+  // 第二步：设置查询单词详情（文本格式）
   const wordDetails = {};
   for (const word of words) {
-    const detailPrompt = `请用中文提供单词 "${word}" 的解析，包含以下信息：
-    1. 原型（baseForm）
-    2. 中文含义（meaning）
-    3. 语法地位（syntax）
-    要求：用简洁文本表示，不需要JSON格式`;
-    
-    const detailData = await callApi(detailPrompt, apiKey);
-    
-    if (detailData && detailData.choices && detailData.choices[0].message.content) {
-      try {
-        const detailContent = detailData.choices[0].message.content.trim();
-        // 解析文本结果（按行分割，提取关键信息）
-        
-        wordDetails[word] = {
-          word,
-          meaning: detailContent || '无',
-        };
-      } catch (error) {
-        console.error(`单词 ${word} 解析失败：`, error);
-        wordDetails[word] = { word, meaning: '解析失败'};
-      }
-    } else {
-      wordDetails[word] = { word, meaning: '无'};
-    }
+    wordDetails[word] = { word, meaning: 'Waiting……'};
   }
 
   // 更新状态（假设 textBlocks 中有 wordDetails 字段）
@@ -195,6 +175,19 @@ const handleAnalyze = async (blockId) => {
     if (data && data.choices && data.choices[0].message.content) {
       setTextBlocks(prev => prev.map(block =>
         block.id === blockId ? { ...block, translated: data.choices[0].message.content } : block
+      ));
+    } else {
+      alert('翻译失败或API异常');
+    }
+  };
+
+  // 翻译函数，支持每段独立翻译
+  const handleTeaching = async (blockId) => {
+    const prompt = `对以下文本进行语法讲解，只需要分析整体句式结构：\n${textBlocks[blockId].text}`;
+    const data = await callApi(prompt, apiKey);
+    if (data && data.choices && data.choices[0].message.content) {
+      setTextBlocks(prev => prev.map(block =>
+        block.id === blockId ? { ...block, analysis: data.choices[0].message.content } : block
       ));
     } else {
       alert('翻译失败或API异常');
@@ -235,19 +228,20 @@ const handleAnalyze = async (blockId) => {
     );
   };
 
+  // 修改后的弹窗渲染函数（同步）
   const renderWordModal = () => {
     if (selectedWord.blockId === null || selectedWord.wordIdx === null) {
       return null;
     }
-    
+
     const block = textBlocks.find(b => b.id === selectedWord.blockId);
-    if (!block || !block.parsed || !block.wordDetails) {
+    if (!block || !block.parsed) {
       return null;
     }
-    
+
     const word = block.parsed[selectedWord.wordIdx];
-    const details = block.wordDetails[word] || { word, meaning: '无' };
-    
+    const details = wordDetails || { word, meaning: 'Waiting……' }; // 使用状态中的数据
+
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
         <div className="bg-white rounded-lg shadow-xl p-6 min-w-[300px] max-w-md relative transform transition-all">
@@ -282,6 +276,52 @@ const handleAnalyze = async (blockId) => {
       </div>
     );
   };
+
+  useEffect(() => {
+    const fetchWordDetails = async () => {
+      if (selectedWord.blockId === null || selectedWord.wordIdx === null) {
+        setWordDetails(null);
+        return;
+      }
+
+      const block = textBlocks.find(b => b.id === selectedWord.blockId);
+      if (!block || !block.parsed) {
+        setWordDetails(null);
+        return;
+      }
+
+      const word = block.parsed[selectedWord.wordIdx];
+      const detailPrompt = `请用中文提供单词 "${word}" 的解析，包含以下信息：
+      1. 原型（baseForm）
+      2. 中文含义（meaning）
+      3. 语法地位（syntax）
+      要求：用简洁文本表示，不需要JSON格式`;
+
+      const detailData = await callApi(detailPrompt, apiKey);
+
+      if (detailData && detailData.choices && detailData.choices[0].message.content) {
+        try {
+          const detailContent = detailData.choices[0].message.content.trim();
+          setWordDetails({
+            word,
+            meaning: detailContent || '无',
+          });
+        } catch (error) {
+          console.error(`单词 ${word} 解析失败：`, error);
+          setWordDetails({ word, meaning: '解析失败' });
+        }
+      } else {
+        setWordDetails({ word, meaning: '无' });
+      }
+    };
+
+    // 仅在 selectedWord 变化时触发请求
+    if (selectedWord.blockId !== null && selectedWord.wordIdx !== null) {
+      fetchWordDetails();
+    } else {
+      setWordDetails(null); // 重置状态当弹窗关闭时
+    }
+  }, [selectedWord, textBlocks, apiKey]); // 依赖项包含触发更新的变量
 
   return (
     <div className="container mx-auto p-4 max-w-5xl">
@@ -480,6 +520,41 @@ const handleAnalyze = async (blockId) => {
                 </div>
               </div>
             )}
+
+            <button
+                className="bg-purple-500 hover:bg-purple-600 text-white px-4 py-1.5 rounded-md flex items-center"
+                onClick={() => handleTeaching(block.id)}
+                disabled={isLoading || !block.text.trim()}
+                style={{
+              display: 'inline-block',
+              width: '15%',
+              padding: '4px 6px',
+              fontSize: '14px',
+              fontWeight: 'bold',
+              textAlign: 'center',
+              color: '#ffffff',
+              backgroundColor: '#87CEEB', // 淡蓝色
+              border: 'none',
+              borderRadius: '6px',
+              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+              cursor: 'pointer',
+              transition: 'background-color 0.3s, transform 0.2s',
+              marginRight: '0.5%',
+            }}
+              >
+                <i className="fa fa-language mr-2"></i> 语法讲解
+              </button>
+
+                        {/* 翻译结果显示 */}
+            {block.analysis && (
+              <div className="mt-4">
+                <div className="bg-purple-50 p-3 rounded-lg">
+                  <ReactMarkdown>{block.analysis}</ReactMarkdown>
+                </div>
+              </div>
+            )}
+
+            
 
             <div className="flex justify-between items-center mb-3">
               <div className="flex space-x-2">
