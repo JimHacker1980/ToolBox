@@ -506,6 +506,7 @@ const handleAnalyze = async (blockId) => {
               cursor: 'pointer',
               transition: 'background-color 0.3s, transform 0.2s',
               marginRight: '0.5%',
+              margin: '2px 0.5%', // 增加上下间距
             }}
               >
                 <i className="fa fa-language mr-2"></i> 翻译文本
