@@ -445,6 +445,7 @@ const handleAnalyze = async (blockId) => {
               position: 'relative',
               transition: 'box-shadow 0.2s',
               font: 'Times New Roman bold',
+              fontFamily: 'Times New Roman',
               fontSize: 18,
             }}
               />
