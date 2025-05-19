@@ -291,7 +291,7 @@ const handleAnalyze = async (blockId) => {
       }
 
       const word = block.parsed[selectedWord.wordIdx];
-      const detailPrompt = `请用中文提供单词 "${word}" 的解析，包含以下信息：
+      const detailPrompt = `请用中文提供句子"${block.text}"中单词 "${word}" 的解析，包含以下信息：
       1. 原型（baseForm）
       2. 中文含义（meaning）
       3. 语法地位（syntax）
