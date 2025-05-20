@@ -22,10 +22,8 @@ const JsonViewer = ({ content, onItemSelect }) => {
   };
 
   return (
-    <div className="flex">
-      {/* 侧边栏 */}
-      <div className="w-1/4 border-r border-gray-300 p-4" style={{ maxHeight: '400px', overflowY: 'auto' }}>
-        <div className="flex justify-between mb-4">
+    <div>
+    <div styles={{padding: '16px', backgroundColor: '#f8fafc', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'}}>
           <button
             style={{
               display: 'inline-block',
@@ -68,6 +66,48 @@ const JsonViewer = ({ content, onItemSelect }) => {
             定理
           </button>
         </div>
+    <div style={{ display: 'flex', width: '100%' }}>
+      {/* 侧边栏 */}
+      <div
+        style={{
+          width: 300,
+          minWidth: 300,
+          maxWidth: 300,
+          borderRight: '1.5px solid #b6c2d1',
+          padding: 28,
+          maxHeight: 500,
+          overflowY: 'auto',
+          boxSizing: 'border-box',
+          background: 'transparent',
+          borderTopLeftRadius: 18,
+          borderBottomLeftRadius: 18,
+          boxShadow: '2px 0 12px 0 rgba(59,130,246,0.07)',
+          borderRightWidth: 2,
+          borderRightStyle: 'solid',
+          borderRightColor: '#b6c2d1',
+          marginTop: 24,
+          marginBottom: 24,
+          marginLeft: 24,
+          marginRight: 24,
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'flex-start',
+          // 自定义滚动条
+          scrollbarWidth: 'thin',
+          scrollbarColor: 'rgba(59,130,246,0.15) transparent',
+        }}
+      >
+        <style>{`
+          /* 仅作用于本侧边栏的滚动条 */
+          div[style*='overflow-y: auto']::-webkit-scrollbar {
+            width: 10px;
+            background: transparent;
+          }
+          div[style*='overflow-y: auto']::-webkit-scrollbar-thumb {
+            background: rgba(59,130,246,0.15);
+            border-radius: 8px;
+          }
+        `}</style>
         <ul>
           {jsonData[selectedType]?.map((item, index) => (
             <li
@@ -117,6 +157,7 @@ const JsonViewer = ({ content, onItemSelect }) => {
           <p className="text-gray-500">请选择一个{selectedType}以查看详细信息。</p>
         )}
       </div>
+    </div>
     </div>
   );
 };

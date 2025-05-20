@@ -94,18 +94,9 @@ const FileUploader = ({ onFileUpload }) => {
                 cursor: 'pointer',
                 transition: 'background-color 0.3s, transform 0.2s',
                 marginRight: '0.5%',
+                marginBottom: '0.5%',
               }}
             />
-            <label htmlFor="file-upload" className="cursor-pointer w-full h-full flex flex-col items-center justify-center">
-              <div className="flex flex-col items-center justify-center">
-                <i className="fa-solid fa-file-json text-5xl text-gray-400 mb-4"></i>
-                <p className="text-lg font-medium text-gray-700 mb-1">拖拽JSON文件到此处，或</p>
-                <p className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200">
-                  <i className="fa-solid fa-upload mr-2"></i>选择文件
-                </p>
-                <p className="mt-4 text-sm text-gray-500">支持拖拽上传 .json 文件</p>
-              </div>
-            </label>
           </>
         )}
       </div>
