@@ -14,9 +14,9 @@ const ApiConfigurator = ({ onApiResponse, currentItem, currentType }) => {
     }
 
     if (currentType === '概念') {
-      return `请解释以下概念或例子，注意解释要简练，并且结合数学公式，给出直观的解释，和一个具体的例子：\n\n名称：${currentItem.概念名}\n定义：${currentItem.概念定义}`;
+      return `请用中文解释以下概念或例子，注意解释要简练，并且结合数学公式，给出直观的解释，和一个具体的例子：\n\n名称：${currentItem.概念名}\n定义：${currentItem.概念定义}`;
     } else if (currentType === '定理') {
-      return `请解释以下定理和证明，解释需要指出这个定理的证明思路的出发点是什么，以及整个思路里面关键环节，用自然语言解释每个环节，给出这些自然语言对应的数学公式，注意解释要简练：\n\n内容：${currentItem.定理内容}\n证明：${currentItem.证明}`;
+      return `请用中文解释以下定理和证明，解释需要指出这个定理的证明思路的出发点是什么，以及整个思路里面关键环节，用自然语言解释每个环节，给出这些自然语言对应的数学公式，注意解释要简练：\n\n内容：${currentItem.定理内容}\n证明：${currentItem.证明}`;
     }
 
     return '';
