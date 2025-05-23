@@ -96,59 +96,40 @@ const JsonViewer = ({ content, onItemSelect }) => {
             scrollbarColor: 'rgba(59,130,246,0.15) transparent',
           }}
         >
-          <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-            {jsonData[selectedType]?.map((item, index) => (
-              <li
-                key={index}
-                style={
-                  selectedItem === item
-                    ? {
-                        background: 'linear-gradient(90deg,#60a5fa 0%,#2563eb 100%)',
-                        color: '#fff',
-                        borderRadius: 6,
-                        fontWeight: 700,
-                        boxShadow: '0 2px 8px #2563eb22',
-                        padding: '2px 8px',
-                        marginBottom: 2,
-                        cursor: 'pointer',
-                        transition: 'all 0.2s',
-                        fontSize: 15,
-                        lineHeight: 1.1,
-                        minHeight: 22,
-                        display: 'flex',
-                        alignItems: 'center',
-                      }
-                    : {
-                        borderRadius: 6,
-                        fontWeight: 600,
-                        padding: '2px 8px',
-                        marginBottom: 2,
-                        color: '#2563eb',
-                        background: '#fff',
-                        cursor: 'pointer',
-                        transition: 'all 0.2s',
-                        fontSize: 15,
-                        lineHeight: 1.1,
-                        minHeight: 22,
-                        display: 'flex',
-                        alignItems: 'center',
-                      }
-                }
-                onClick={() => handleItemClick(item)}
-              >
-                {selectedType === '概念' ? item.概念名 : item.定理内容.split('**')[1]}
-              </li>
-            ))}
-          </ul>
+          <ul>
+          {jsonData[selectedType]?.map((item, index) => (
+            <li
+              key={index}
+              className="cursor-pointer py-2 px-4 mb-2"
+              style={
+                selectedItem === item
+                  ? {
+                      backgroundColor: '#87CEEB', // 深蓝色
+                      color: '#fff',
+                      borderRadius: '6px',
+                      fontWeight: 'bold',
+                      boxShadow: '0 2px 8px #87CEEB',
+                    }
+                  : {
+                      borderRadius: '6px',
+                      fontWeight: 'bold',
+                  }
+              }
+              onClick={() => handleItemClick(item)}
+            >
+              {selectedType === '概念' ? item.概念名 : item.定理内容.split('**')[1]}
+            </li>
+          ))}
+        </ul>
         </div>
         {/* 主内容区 */}
         <div style={{ flex: 1, background: '#fff', borderRadius: 16, boxShadow: '0 2px 12px #2563eb11', padding: 36, minHeight: 320, marginTop: 12, marginBottom: 12 }}>
           {selectedItem ? (
             <div>
-              <h2 style={{ fontSize: 24, fontWeight: 700, color: '#2563eb', marginBottom: 18 }}>
+              <h2 style={{ fontSize: 24, fontWeight: 700, marginBottom: 18 }}>
                 {selectedType === '概念' ? selectedItem.概念名 : selectedItem.定理内容.split('**')[1]}
               </h2>
-              <div style={{ fontSize: 17, color: '#222', lineHeight: 1.8 }}>
+              <div style={{ fontSize: 17, lineHeight: 1.8 }}>
                 {selectedType === '概念' ? (
                   <ReactMarkdown remarkPlugins={[remarkMath]} rehypePlugins={[rehypeKatex]}>{selectedItem.概念定义}</ReactMarkdown>
                 ) : (
