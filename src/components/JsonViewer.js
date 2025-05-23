@@ -75,10 +75,10 @@ const JsonViewer = ({ content, onItemSelect }) => {
         <div
           style={{
             width: 200,
-            minWidth: 160,
+            minWidth: 140,
             maxWidth: 220,
             borderRight: '1.5px solid #b6c2d1',
-            padding: 18,
+            padding: '2px 0',
             maxHeight: 540,
             overflowY: 'auto',
             background: '#f8fafc',
@@ -105,23 +105,33 @@ const JsonViewer = ({ content, onItemSelect }) => {
                     ? {
                         background: 'linear-gradient(90deg,#60a5fa 0%,#2563eb 100%)',
                         color: '#fff',
-                        borderRadius: 8,
+                        borderRadius: 6,
                         fontWeight: 700,
                         boxShadow: '0 2px 8px #2563eb22',
-                        padding: '10px 18px',
-                        marginBottom: 10,
+                        padding: '2px 8px',
+                        marginBottom: 2,
                         cursor: 'pointer',
                         transition: 'all 0.2s',
+                        fontSize: 15,
+                        lineHeight: 1.1,
+                        minHeight: 22,
+                        display: 'flex',
+                        alignItems: 'center',
                       }
                     : {
-                        borderRadius: 8,
+                        borderRadius: 6,
                         fontWeight: 600,
-                        padding: '10px 18px',
-                        marginBottom: 10,
+                        padding: '2px 8px',
+                        marginBottom: 2,
                         color: '#2563eb',
                         background: '#fff',
                         cursor: 'pointer',
                         transition: 'all 0.2s',
+                        fontSize: 15,
+                        lineHeight: 1.1,
+                        minHeight: 22,
+                        display: 'flex',
+                        alignItems: 'center',
                       }
                 }
                 onClick={() => handleItemClick(item)}
@@ -144,7 +154,7 @@ const JsonViewer = ({ content, onItemSelect }) => {
                 ) : (
                   <div>
                     <ReactMarkdown remarkPlugins={[remarkMath]} rehypePlugins={[rehypeKatex]}>{selectedItem.定理内容}</ReactMarkdown>
-                    <div style={{ marginTop: 18, background: '#f8fafc', borderRadius: 8, padding: '12px 16px', color: '#2563eb', fontSize: 16 }}>
+                    <div style={{ marginTop: 18, background: '#f8fafc', borderRadius: 8, padding: '12px 16px', fontSize: 16 }}>
                       <ReactMarkdown remarkPlugins={[remarkMath]} rehypePlugins={[rehypeKatex]}>{selectedItem.证明}</ReactMarkdown>
                     </div>
                   </div>
