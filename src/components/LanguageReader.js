@@ -324,29 +324,33 @@ const handleAnalyze = async (blockId) => {
   }, [selectedWord, textBlocks, apiKey]); // 依赖项包含触发更新的变量
 
   return (
-    <div className="container mx-auto p-4 max-w-5xl">
+    <div className="container mx-auto p-4 max-w-5xl" style={{ background: '#f6faff', minHeight: '100vh', borderRadius: 24, boxShadow: '0 4px 32px 0 rgba(59,130,246,0.08)', padding: '32px 0' }}>
       {/* 文件上传与API密钥区域 */}
-      <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-6 gap-4">
-        <div className="relative">
+      <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 24,
+        alignItems: 'stretch',
+        marginBottom: 36,
+        padding: '0 24px',
+      }}>
+        <div style={{ display: 'flex', gap: 18, alignItems: 'center', flexWrap: 'wrap' }}>
           <button
-            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg shadow flex items-center"
             onClick={() => fileInputRef.current.click()}
             style={{
-                display: 'inline-block',
-                width: '15%',
-                padding: '8px 10px',
-                fontSize: '14px',
-                fontWeight: 'bold',
-                textAlign: 'center',
-                color: '#ffffff',
-                backgroundColor: '#B0E0E6', // 淡蓝色
-                border: 'none',
-                borderRadius: '6px',
-                boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-                cursor: 'pointer',
-                transition: 'background-color 0.3s, transform 0.2s',
-                marginRight: '0.5%',
-              }}
+              display: 'inline-block',
+              padding: '10px 28px',
+              fontSize: 16,
+              fontWeight: 600,
+              color: '#fff',
+              background: 'linear-gradient(90deg,#60a5fa 0%,#2563eb 100%)',
+              border: 'none',
+              borderRadius: 10,
+              boxShadow: '0 2px 8px #2563eb22',
+              cursor: 'pointer',
+              transition: 'background 0.2s',
+              marginRight: 8,
+            }}
           >
             <i className="fa fa-upload mr-2"></i> 选择TXT文件
           </button>
@@ -355,254 +359,192 @@ const handleAnalyze = async (blockId) => {
             ref={fileInputRef}
             accept=".txt"
             onChange={handleFileUpload}
-            className="hidden"
-            style={{
-                display: 'inline-block',
-                width: '15%',
-                padding: '8px 10px',
-                fontSize: '14px',
-                fontWeight: 'bold',
-                textAlign: 'center',
-                color: '#ffffff',
-                backgroundColor: '#B0E0E6', // 淡蓝色
-                border: 'none',
-                borderRadius: '6px',
-                boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-                cursor: 'pointer',
-                transition: 'background-color 0.3s, transform 0.2s',
-                marginRight: '0.5%',
-              }}
+            style={{ display: 'none' }}
           />
         </div>
-
-        <div className="w-full md:w-auto">
-          <label htmlFor="apiKey" className="block text-sm font-medium text-gray-700 mb-1">
-            API密钥
-          </label>
-          <div className="relative">
-            <input
-              type="password"
-              id="apiKey"
-              value={apiKey}
-              onChange={(e) => setApiKey(e.target.value)}
-              className="w-full md:w-64 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-              placeholder="输入你的API密钥"
-              style={{
+        <div style={{ maxWidth: 340 }}>
+          <label htmlFor="apiKey" style={{ display: 'block', fontSize: 15, fontWeight: 500, color: '#2563eb', marginBottom: 6 }}>API密钥</label>
+          <input
+            type="password"
+            id="apiKey"
+            value={apiKey}
+            onChange={(e) => setApiKey(e.target.value)}
+            placeholder="输入你的API密钥"
+            style={{
+              width: '100%',
+              padding: '12px 16px',
+              border: '2px solid #60a5fa',
+              borderRadius: 10,
+              fontSize: 15,
               background: '#fff',
-              border: '2px solid #87ceeb', // 蓝色高对比边框
-              width: '10%',
-              borderRadius: 18,
-              boxShadow: '0 4px 24px 0 rgba(59,130,246,0.10), 0 1.5px 6px 0 rgba(0,0,0,0.06)',
-              padding: 12,
-              margin: '0 auto',
-              marginBottom: 32,
-              position: 'relative',
-              transition: 'box-shadow 0.2s',
+              boxShadow: '0 1.5px 6px 0 rgba(59,130,246,0.10)',
+              marginBottom: 8,
+              outline: 'none',
+              transition: 'border 0.2s',
             }}
-            />
-            
-                          <div className="text-xs text-gray-400 mt-1">提示：输入时按Enter键自动创建新段落</div>
-
-          </div>
+          />
+          <div style={{ color: '#aaa', fontSize: 13 }}>提示：输入时按Enter键自动创建新段落</div>
         </div>
       </div>
 
       {/* 文本块区域 */}
-      <div className="space-y-4">
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 32, padding: '0 24px' }}>
         {textBlocks.map((block) => (
           <div
             key={block.id}
             style={{
               background: '#fff',
-              border: '2px solid #87ceeb', // 蓝色高对比边框
-              width: '90%',
-              borderRadius: 18,
-              boxShadow: '0 4px 24px 0 rgba(59,130,246,0.10), 0 1.5px 6px 0 rgba(0,0,0,0.06)',
-              padding: 24,
+              border: '1.5px solid #60a5fa',
+              borderRadius: 16,
+              boxShadow: '0 4px 24px 0 rgba(59,130,246,0.10)',
+              padding: 28,
               margin: '0 auto',
-              marginBottom: 32,
               position: 'relative',
               transition: 'box-shadow 0.2s',
+              width: '100%',
+              maxWidth: 900,
             }}
           >
 
-            <div className="mb-4">
+            <div style={{ marginBottom: 18 }}>
               <textarea
                 ref={(el) => textareaRefs.current[block.id] = el}
                 value={block.text}
                 onChange={(e) => handleTextChange(e, block.id)}
-                className="w-full p-3 bg-gray-50 rounded-lg border border-gray-200 min-h-24 focus:border-blue-500 focus:ring-blue-200"
                 placeholder="请输入或粘贴文本（按Enter自动分段）"
                 rows={3}
                 style={{
-              background: '#fff',
-              width: '95%',
-              borderRadius: 18,
-              boxShadow: '0 4px 24px 0 rgba(59,130,246,0.10), 0 1.5px 6px 0 rgba(0,0,0,0.06)',
-              padding: 24,
-              margin: '0 auto',
-              marginBottom: 32,
-              position: 'relative',
-              transition: 'box-shadow 0.2s',
-              font: 'Times New Roman bold',
-              fontFamily: 'Times New Roman',
-              fontSize: 18,
-            }}
+                  width: '100%',
+                  minHeight: 60,
+                  borderRadius: 10,
+                  border: '1.5px solid #dbeafe',
+                  background: '#f8fafc',
+                  fontFamily: 'inherit',
+                  fontSize: 17,
+                  padding: '14px 16px',
+                  marginBottom: 8,
+                  boxShadow: '0 1.5px 6px 0 rgba(59,130,246,0.06)',
+                  outline: 'none',
+                  resize: 'vertical',
+                  transition: 'border 0.2s',
+                }}
               />
             </div>
-
-
-            <div className="flex justify-between items-center mb-4">
+            <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginBottom: 10 }}>
               <button
-                className="bg-green-500 hover:bg-green-600 text-white px-4 py-1.5 rounded-md flex items-center"
                 onClick={() => handleAnalyze(block.id)}
                 disabled={isLoading || !block.text.trim()}
                 style={{
-              display: 'inline-block',
-              width: '15%',
-              padding: '4px 6px',
-              fontSize: '14px',
-              fontWeight: 'bold',
-              textAlign: 'center',
-              color: '#ffffff',
-              backgroundColor: '#87CEEB', // 淡蓝色
-              border: 'none',
-              borderRadius: '6px',
-              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-              cursor: 'pointer',
-              transition: 'background-color 0.3s, transform 0.2s',
-              marginRight: '0.5%',
-            }}
+                  padding: '7px 18px',
+                  fontSize: 15,
+                  fontWeight: 600,
+                  color: '#fff',
+                  background: '#38bdf8',
+                  border: 'none',
+                  borderRadius: 8,
+                  boxShadow: '0 1px 4px #2563eb11',
+                  cursor: isLoading || !block.text.trim() ? 'not-allowed' : 'pointer',
+                  opacity: isLoading || !block.text.trim() ? 0.6 : 1,
+                  transition: 'background 0.2s',
+                }}
               >
                 <i className="fa fa-sitemap mr-2"></i> 解析单词
               </button>
-
-              {/* 翻译结果显示 */}
-            
-
-              {/* 解析结果显示 */}
+              <button
+                onClick={() => handleTranslate(block.id)}
+                disabled={isLoading || !block.text.trim()}
+                style={{
+                  padding: '7px 18px',
+                  fontSize: 15,
+                  fontWeight: 600,
+                  color: '#fff',
+                  background: '#a78bfa',
+                  border: 'none',
+                  borderRadius: 8,
+                  boxShadow: '0 1px 4px #2563eb11',
+                  cursor: isLoading || !block.text.trim() ? 'not-allowed' : 'pointer',
+                  opacity: isLoading || !block.text.trim() ? 0.6 : 1,
+                  transition: 'background 0.2s',
+                }}
+              >
+                <i className="fa fa-language mr-2"></i> 翻译文本
+              </button>
+              <button
+                onClick={() => handleTeaching(block.id)}
+                disabled={isLoading || !block.text.trim()}
+                style={{
+                  padding: '7px 18px',
+                  fontSize: 15,
+                  fontWeight: 600,
+                  color: '#fff',
+                  background: '#f59e42',
+                  border: 'none',
+                  borderRadius: 8,
+                  boxShadow: '0 1px 4px #2563eb11',
+                  cursor: isLoading || !block.text.trim() ? 'not-allowed' : 'pointer',
+                  opacity: isLoading || !block.text.trim() ? 0.6 : 1,
+                  transition: 'background 0.2s',
+                }}
+              >
+                <i className="fa fa-language mr-2"></i> 语法讲解
+              </button>
+              {textBlocks.length > 1 && (
+                <button
+                  onClick={() => {
+                    setTextBlocks(prev => {
+                      const newBlocks = prev.filter(b => b.id !== block.id);
+                      return reorderIds(newBlocks);
+                    });
+                  }}
+                  style={{
+                    padding: '7px 18px',
+                    fontSize: 15,
+                    fontWeight: 600,
+                    color: '#fff',
+                    background: '#ef4444',
+                    border: 'none',
+                    borderRadius: 8,
+                    boxShadow: '0 1px 4px #2563eb11',
+                    cursor: 'pointer',
+                    transition: 'background 0.2s',
+                  }}
+                >
+                  <i className="fa fa-trash mr-1"></i> 删除
+                </button>
+              )}
+            </div>
+            {/* 解析结果显示 */}
             {block.parsed && (
-              <div className="border-t border-gray-200 pt-4">
+              <div style={{ borderTop: '1px solid #e5e7eb', paddingTop: 12, marginTop: 8 }}>
                 {renderWordButtons(block.parsed, block.id)}
                 {renderWordModal(block)}
               </div>
             )}
-
-              <button
-                className="bg-purple-500 hover:bg-purple-600 text-white px-4 py-1.5 rounded-md flex items-center"
-                onClick={() => handleTranslate(block.id)}
-                disabled={isLoading || !block.text.trim()}
-                style={{
-              display: 'inline-block',
-              width: '15%',
-              padding: '4px 6px',
-              fontSize: '14px',
-              fontWeight: 'bold',
-              textAlign: 'center',
-              color: '#ffffff',
-              backgroundColor: '#87CEEB', // 淡蓝色
-              border: 'none',
-              borderRadius: '6px',
-              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-              cursor: 'pointer',
-              transition: 'background-color 0.3s, transform 0.2s',
-              marginRight: '0.5%',
-              margin: '2px 0.5%', // 增加上下间距
-            }}
-              >
-                <i className="fa fa-language mr-2"></i> 翻译文本
-              </button>
-            </div>
-
             {/* 翻译结果显示 */}
             {block.translated && (
-              <div className="mt-4">
-                <div className="bg-purple-50 p-3 rounded-lg">
-                  <p className="text-gray-800">{block.translated}</p>
+              <div style={{ marginTop: 14 }}>
+                <div style={{ background: '#ede9fe', padding: '12px 16px', borderRadius: 8, color: '#4b2995', fontSize: 16 }}>
+                  {block.translated}
                 </div>
               </div>
             )}
-
-            <button
-                className="bg-purple-500 hover:bg-purple-600 text-white px-4 py-1.5 rounded-md flex items-center"
-                onClick={() => handleTeaching(block.id)}
-                disabled={isLoading || !block.text.trim()}
-                style={{
-              display: 'inline-block',
-              width: '15%',
-              padding: '4px 6px',
-              fontSize: '14px',
-              fontWeight: 'bold',
-              textAlign: 'center',
-              color: '#ffffff',
-              backgroundColor: '#87CEEB', // 淡蓝色
-              border: 'none',
-              borderRadius: '6px',
-              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-              cursor: 'pointer',
-              transition: 'background-color 0.3s, transform 0.2s',
-              marginRight: '0.5%',
-            }}
-              >
-                <i className="fa fa-language mr-2"></i> 语法讲解
-              </button>
-
-                        {/* 翻译结果显示 */}
+            {/* 语法讲解显示 */}
             {block.analysis && (
-              <div className="mt-4">
-                <div className="bg-purple-50 p-3 rounded-lg">
+              <div style={{ marginTop: 14 }}>
+                <div style={{ background: '#fef3c7', padding: '12px 16px', borderRadius: 8, color: '#b45309', fontSize: 16 }}>
                   <ReactMarkdown>{block.analysis}</ReactMarkdown>
                 </div>
               </div>
             )}
-
-            
-
-            <div className="flex justify-between items-center mb-3">
-              <div className="flex space-x-2">
-                {textBlocks.length > 1 && (
-                  <button
-                    className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md"
-                    onClick={() => {
-                      setTextBlocks(prev => {
-                        const newBlocks = prev.filter(b => b.id !== block.id);
-                        return reorderIds(newBlocks);
-                      });
-                    }}
-                    style={{
-              display: 'inline-block',
-              width: '15%',
-              padding: '8px 10px',
-              fontSize: '14px',
-              fontWeight: 'bold',
-              textAlign: 'center',
-              color: '#ffffff',
-              backgroundColor: '#87CEEB', // 淡蓝色
-              border: 'none',
-              borderRadius: '6px',
-              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-              cursor: 'pointer',
-              transition: 'background-color 0.3s, transform 0.2s',
-              marginRight: '0.5%',
-              margin: '2px 0.5%', // 增加上下间距
-            }}
-                  >
-                    <i className="fa fa-trash mr-1"></i> 删除
-                  </button>
-                )}
-              </div>
-            </div>
-            
           </div>
         ))}
       </div>
-
       {/* 加载状态 */}
       {isLoading && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-lg shadow-xl">
-            <div className="animate-spin h-8 w-8 border-4 border-blue-300 border-t-blue-600 rounded-full mr-4"></div>
-            <p className="text-lg text-gray-700">正在请求大模型服务，请稍候...</p>
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 50, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div style={{ background: '#fff', padding: 32, borderRadius: 16, boxShadow: '0 4px 24px 0 rgba(59,130,246,0.10)' }}>
+            <div style={{ width: 40, height: 40, border: '4px solid #60a5fa', borderTop: '4px solid #2563eb', borderRadius: '50%', animation: 'spin 1s linear infinite', margin: '0 auto 18px' }}></div>
+            <p style={{ fontSize: 18, color: '#2563eb', textAlign: 'center' }}>正在请求大模型服务，请稍候...</p>
           </div>
         </div>
       )}

@@ -22,142 +22,140 @@ const JsonViewer = ({ content, onItemSelect }) => {
   };
 
   return (
-    <div>
-    <div styles={{padding: '16px', backgroundColor: '#f8fafc', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'}}>
-          <button
-            style={{
-              display: 'inline-block',
-              width: '15%',
-              padding: '8px 10px',
-              fontSize: '14px',
-              fontWeight: 'bold',
-              textAlign: 'center',
-              color: '#ffffff',
-              backgroundColor: '#87CEEB', // 淡蓝色
-              border: 'none',
-              borderRadius: '6px',
-              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-              cursor: 'pointer',
-              transition: 'background-color 0.3s, transform 0.2s',
-              marginRight: '0.5%',
-            }}
-            onClick={() => handleTypeChange('概念')}
-          >
-            概念
-          </button>
-          <button
-            style={{
-              display: 'inline-block',
-              width: '15%',
-              padding: '8px 10px',
-              fontSize: '14px',
-              fontWeight: 'bold',
-              textAlign: 'center',
-              color: '#ffffff',
-              backgroundColor: '#87CEEB', // 淡蓝色
-              border: 'none',
-              borderRadius: '6px',
-              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-              cursor: 'pointer',
-              transition: 'background-color 0.3s, transform 0.2s',
-            }}
-            onClick={() => handleTypeChange('定理')}
-          >
-            定理
-          </button>
+    <div style={{ background: '#f6faff', borderRadius: 18, boxShadow: '0 4px 32px 0 rgba(59,130,246,0.08)', padding: 32, margin: '0 auto', maxWidth: 1200 }}>
+      {/* 类型切换按钮 */}
+      <div style={{
+        display: 'flex',
+        gap: 18,
+        marginBottom: 24,
+        background: '#f8fafc',
+        borderRadius: 10,
+        boxShadow: '0 2px 8px #2563eb11',
+        padding: '12px 24px',
+        alignItems: 'center',
+        width: 'fit-content',
+      }}>
+        <button
+          style={{
+            padding: '8px 28px',
+            fontSize: 16,
+            fontWeight: 600,
+            color: selectedType === '概念' ? '#fff' : '#2563eb',
+            background: selectedType === '概念' ? 'linear-gradient(90deg,#60a5fa 0%,#2563eb 100%)' : '#f3f6fa',
+            border: selectedType === '概念' ? '2px solid #2563eb' : '1.5px solid #dbeafe',
+            borderRadius: 8,
+            boxShadow: selectedType === '概念' ? '0 2px 8px #2563eb22' : 'none',
+            cursor: 'pointer',
+            transition: 'all 0.2s',
+          }}
+          onClick={() => handleTypeChange('概念')}
+        >
+          概念
+        </button>
+        <button
+          style={{
+            padding: '8px 28px',
+            fontSize: 16,
+            fontWeight: 600,
+            color: selectedType === '定理' ? '#fff' : '#2563eb',
+            background: selectedType === '定理' ? 'linear-gradient(90deg,#60a5fa 0%,#2563eb 100%)' : '#f3f6fa',
+            border: selectedType === '定理' ? '2px solid #2563eb' : '1.5px solid #dbeafe',
+            borderRadius: 8,
+            boxShadow: selectedType === '定理' ? '0 2px 8px #2563eb22' : 'none',
+            cursor: 'pointer',
+            transition: 'all 0.2s',
+          }}
+          onClick={() => handleTypeChange('定理')}
+        >
+          定理
+        </button>
+      </div>
+      <div style={{ display: 'flex', width: '100%' }}>
+        {/* 侧边栏 */}
+        <div
+          style={{
+            width: 200,
+            minWidth: 160,
+            maxWidth: 220,
+            borderRight: '1.5px solid #b6c2d1',
+            padding: 18,
+            maxHeight: 540,
+            overflowY: 'auto',
+            background: '#f8fafc',
+            borderTopLeftRadius: 16,
+            borderBottomLeftRadius: 16,
+            boxShadow: '2px 0 12px 0 rgba(59,130,246,0.07)',
+            marginTop: 12,
+            marginBottom: 12,
+            marginLeft: 0,
+            marginRight: 32,
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'flex-start',
+            scrollbarWidth: 'thin',
+            scrollbarColor: 'rgba(59,130,246,0.15) transparent',
+          }}
+        >
+          <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+            {jsonData[selectedType]?.map((item, index) => (
+              <li
+                key={index}
+                style={
+                  selectedItem === item
+                    ? {
+                        background: 'linear-gradient(90deg,#60a5fa 0%,#2563eb 100%)',
+                        color: '#fff',
+                        borderRadius: 8,
+                        fontWeight: 700,
+                        boxShadow: '0 2px 8px #2563eb22',
+                        padding: '10px 18px',
+                        marginBottom: 10,
+                        cursor: 'pointer',
+                        transition: 'all 0.2s',
+                      }
+                    : {
+                        borderRadius: 8,
+                        fontWeight: 600,
+                        padding: '10px 18px',
+                        marginBottom: 10,
+                        color: '#2563eb',
+                        background: '#fff',
+                        cursor: 'pointer',
+                        transition: 'all 0.2s',
+                      }
+                }
+                onClick={() => handleItemClick(item)}
+              >
+                {selectedType === '概念' ? item.概念名 : item.定理内容.split('**')[1]}
+              </li>
+            ))}
+          </ul>
         </div>
-    <div style={{ display: 'flex', width: '100%' }}>
-      {/* 侧边栏 */}
-      <div
-        style={{
-          width: 300,
-          minWidth: 300,
-          maxWidth: 300,
-          borderRight: '1.5px solid #b6c2d1',
-          padding: 28,
-          maxHeight: 500,
-          overflowY: 'auto',
-          boxSizing: 'border-box',
-          background: 'transparent',
-          borderTopLeftRadius: 18,
-          borderBottomLeftRadius: 18,
-          boxShadow: '2px 0 12px 0 rgba(59,130,246,0.07)',
-          borderRightWidth: 2,
-          borderRightStyle: 'solid',
-          borderRightColor: '#b6c2d1',
-          marginTop: 24,
-          marginBottom: 24,
-          marginLeft: 24,
-          marginRight: 24,
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'flex-start',
-          // 自定义滚动条
-          scrollbarWidth: 'thin',
-          scrollbarColor: 'rgba(59,130,246,0.15) transparent',
-        }}
-      >
-        <style>{`
-          /* 仅作用于本侧边栏的滚动条 */
-          div[style*='overflow-y: auto']::-webkit-scrollbar {
-            width: 10px;
-            background: transparent;
-          }
-          div[style*='overflow-y: auto']::-webkit-scrollbar-thumb {
-            background: rgba(59,130,246,0.15);
-            border-radius: 8px;
-          }
-        `}</style>
-        <ul>
-          {jsonData[selectedType]?.map((item, index) => (
-            <li
-              key={index}
-              className="cursor-pointer py-2 px-4 mb-2"
-              style={
-                selectedItem === item
-                  ? {
-                      backgroundColor: '#87CEEB', // 深蓝色
-                      color: '#fff',
-                      borderRadius: '6px',
-                      fontWeight: 'bold',
-                      boxShadow: '0 2px 8px #87CEEB',
-                    }
-                  : {
-                      borderRadius: '6px',
-                      fontWeight: 'bold',
-                  }
-              }
-              onClick={() => handleItemClick(item)}
-            >
-              {selectedType === '概念' ? item.概念名 : item.定理内容.split('**')[1]}
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      {/* 主内容区 */}
-      <div className="w-3/4 p-4">
-        {selectedItem ? (
-          <div>
-            <h2 className="text-2xl font-bold mb-4">
-              {selectedType === '概念' ? selectedItem.概念名 : selectedItem.定理内容.split('**')[1]}
-            </h2>
-            <div className="prose">
-              {selectedType === '概念' ? (
-                <ReactMarkdown remarkPlugins={[remarkMath]} rehypePlugins={[rehypeKatex]}>{selectedItem.概念定义}</ReactMarkdown>
-              ) : (
-                <div>
-                  <ReactMarkdown remarkPlugins={[remarkMath]} rehypePlugins={[rehypeKatex]}>{selectedItem.定理内容}</ReactMarkdown>
-                  <ReactMarkdown remarkPlugins={[remarkMath]} rehypePlugins={[rehypeKatex]}>{selectedItem.证明}</ReactMarkdown>
-                </div>
-              )}
+        {/* 主内容区 */}
+        <div style={{ flex: 1, background: '#fff', borderRadius: 16, boxShadow: '0 2px 12px #2563eb11', padding: 36, minHeight: 320, marginTop: 12, marginBottom: 12 }}>
+          {selectedItem ? (
+            <div>
+              <h2 style={{ fontSize: 24, fontWeight: 700, color: '#2563eb', marginBottom: 18 }}>
+                {selectedType === '概念' ? selectedItem.概念名 : selectedItem.定理内容.split('**')[1]}
+              </h2>
+              <div style={{ fontSize: 17, color: '#222', lineHeight: 1.8 }}>
+                {selectedType === '概念' ? (
+                  <ReactMarkdown remarkPlugins={[remarkMath]} rehypePlugins={[rehypeKatex]}>{selectedItem.概念定义}</ReactMarkdown>
+                ) : (
+                  <div>
+                    <ReactMarkdown remarkPlugins={[remarkMath]} rehypePlugins={[rehypeKatex]}>{selectedItem.定理内容}</ReactMarkdown>
+                    <div style={{ marginTop: 18, background: '#f8fafc', borderRadius: 8, padding: '12px 16px', color: '#2563eb', fontSize: 16 }}>
+                      <ReactMarkdown remarkPlugins={[remarkMath]} rehypePlugins={[rehypeKatex]}>{selectedItem.证明}</ReactMarkdown>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
-        ) : (
-          <p className="text-gray-500">请选择一个{selectedType}以查看详细信息。</p>
-        )}
+          ) : (
+            <p style={{ color: '#888', fontSize: 16 }}>请选择一个{selectedType}以查看详细信息。</p>
+          )}
+        </div>
       </div>
-    </div>
     </div>
   );
 };

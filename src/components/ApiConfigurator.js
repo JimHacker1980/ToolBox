@@ -97,24 +97,24 @@ const ApiConfigurator = ({ onApiResponse, currentItem, currentType }) => {
   };
 
   return (
-    <div style={{ display: 'flex', alignItems: 'flex-start', gap: 32 }}>
+    <div style={{ display: 'flex', alignItems: 'flex-start', gap: 36, background: '#f6faff', borderRadius: 18, boxShadow: '0 4px 32px 0 rgba(59,130,246,0.08)', padding: 32, margin: '0 auto', maxWidth: 1100 }}>
       {/* 左侧API配置卡片 */}
       <div style={{
-        borderTop: '1px solid #d1d5db',
-        borderLeft: '1px solid #d1d5db',
-        borderBottom: '1px solid #d1d5db',
-        borderRight: 'none',
-        borderRadius: '16px 16px 16px 16px', // 四角圆角，右上右下光滑
+        border: '1.5px solid #dbeafe',
+        borderRadius: 16,
         background: '#fff',
-        padding: 24,
-        width: 200,
+        padding: 28,
+        width: 260,
         minWidth: 200,
         maxWidth: 200,
-        boxShadow: '0 2px 8px rgba(59,130,246,0.07)',
+        boxShadow: '0 2px 12px #2563eb11',
         marginTop: 8,
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 18,
       }}>
-        <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 12 }}>大模型 API 配置</h2>
-        <div style={{ marginBottom: 12 }}>
+        <h2 style={{ fontSize: 19, fontWeight: 700, marginBottom: 8, color: '#2563eb', letterSpacing: 1 }}>大模型 API 配置</h2>
+        <div>
           <label style={{
             display: 'block',
             fontSize: 15,
@@ -130,19 +130,20 @@ const ApiConfigurator = ({ onApiResponse, currentItem, currentType }) => {
             onChange={handleApiKeyChange}
             placeholder="请输入您的API密钥"
             style={{
-              background: '#fff',
-              border: '2px solid #87ceeb',
+              background: '#f8fafc',
+              border: '2px solid #60a5fa',
               width: '90%',
-              borderRadius: 18,
-              boxShadow: '0 4px 24px 0 rgba(59,130,246,0.10), 0 1.5px 6px 0 rgba(0,0,0,0.06)',
-              padding: 12,
+              borderRadius: 10,
+              boxShadow: '0 1.5px 6px 0 rgba(59,130,246,0.10)',
+              padding: '10px 14px',
               marginBottom: 5,
-              position: 'relative',
+              fontSize: 15,
+              outline: 'none',
               transition: 'box-shadow 0.2s',
             }}
           />
         </div>
-        <div style={{ marginBottom: 12 }}>
+        <div>
           <label style={{
             display: 'block',
             fontSize: 15,
@@ -157,17 +158,18 @@ const ApiConfigurator = ({ onApiResponse, currentItem, currentType }) => {
             readOnly
             placeholder="问题将根据当前显示的内容自动生成"
             style={{
-              background: '#fff',
-              border: '2px solid #87ceeb',
+              background: '#f8fafc',
+              border: '2px solid #60a5fa',
               width: '90%',
-              borderRadius: 18,
-              boxShadow: '0 4px 24px 0 rgba(59,130,246,0.10), 0 1.5px 6px 0 rgba(0,0,0,0.06)',
-              padding: 12,
+              borderRadius: 10,
+              boxShadow: '0 1.5px 6px 0 rgba(59,130,246,0.10)',
+              padding: '10px 14px',
               marginBottom: 5,
-              position: 'relative',
-              transition: 'box-shadow 0.2s',
+              fontSize: 15,
               minHeight: 60,
               resize: 'vertical',
+              outline: 'none',
+              transition: 'box-shadow 0.2s',
             }}
           />
         </div>
@@ -176,18 +178,19 @@ const ApiConfigurator = ({ onApiResponse, currentItem, currentType }) => {
           style={{
             display: 'inline-block',
             width: '100%',
-            padding: '10px 0',
-            fontSize: '15px',
-            fontWeight: 'bold',
+            padding: '12px 0',
+            fontSize: '16px',
+            fontWeight: 700,
             textAlign: 'center',
             color: '#fff',
-            backgroundColor: '#87CEEB',
+            background: 'linear-gradient(90deg,#60a5fa 0%,#2563eb 100%)',
             border: 'none',
-            borderRadius: '8px',
-            boxShadow: '0 2px 4px rgba(0, 0, 0, 0.08)',
+            borderRadius: 10,
+            boxShadow: '0 2px 8px #2563eb22',
             cursor: 'pointer',
-            transition: 'background-color 0.3s, transform 0.2s',
+            transition: 'background 0.2s',
             marginTop: 8,
+            letterSpacing: 1,
           }}
         >
           发送问题
@@ -196,13 +199,13 @@ const ApiConfigurator = ({ onApiResponse, currentItem, currentType }) => {
       {/* 右侧模型返回内容 */}
       <div style={{ flex: 1, minWidth: 0 }}>
         {response && (
-          <div style={{ marginTop: 0, padding: 24, border: '1px solid #d1d5db', borderRadius: 16, background: '#f8fafc', minHeight: 120 }}>
-            <h3 style={{ fontSize: 15, fontWeight: 700, marginBottom: 10 }}>模型返回的内容:</h3>
+          <div style={{ marginTop: 0, padding: 32, border: '1.5px solid #dbeafe', borderRadius: 16, background: '#f8fafc', minHeight: 120, boxShadow: '0 2px 12px #2563eb11' }}>
+            <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 12, color: '#2563eb' }}>模型返回的内容:</h3>
             <ReactMarkdown
               remarkPlugins={[remarkMath]}
               rehypePlugins={[rehypeKatex]}
               components={{
-                p: ({ node, ...props }) => <p {...props} style={{ fontSize: 15, color: '#374151', whiteSpace: 'pre-wrap', margin: 0 }} />,
+                p: ({ node, ...props }) => <p {...props} style={{ fontSize: 16, color: '#374151', whiteSpace: 'pre-wrap', margin: 0 }} />,
               }}
             >
               {response}

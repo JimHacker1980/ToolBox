@@ -58,46 +58,61 @@ const FileUploader = ({ onFileUpload }) => {
   };
 
   return (
-    <div className="mb-8">
+    <div style={{ marginBottom: 24, display: 'flex', alignItems: 'flex-start' }}>
+      {/* 拖拽+按钮整体区域 */}
       <div
-        className={`border-2 border-dashed ${isDragActive ? 'border-blue-500 bg-blue-50' : 'border-gray-300 bg-white'} rounded-lg p-8 text-center transition-all duration-300 min-h-[200px] flex flex-col items-center justify-center`}
+        style={{
+          border: isDragActive ? '2px dashed #2563eb' : '2px dashed #d1d5db',
+          background: isDragActive ? '#e0edff' : '#f8fafc',
+          borderRadius: 12,
+          width: 210,
+          minWidth: 120,
+          minHeight: 56,
+          textAlign: 'center',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'flex-start',
+          boxShadow: '0 2px 8px 0 rgba(59,130,246,0.08)',
+          transition: 'all 0.3s',
+          fontSize: 13,
+          color: '#2563eb',
+          padding: '0 10px',
+          gap: 10,
+        }}
         onDragEnter={handleDragEnter}
         onDragLeave={handleDragLeave}
         onDragOver={(e) => e.preventDefault()}
         onDrop={handleDrop}
       >
+        <label htmlFor="file-upload" style={{
+          display: 'inline-block',
+          padding: '8px 18px',
+          fontSize: 15,
+          fontWeight: 700,
+          color: '#fff',
+          background: 'linear-gradient(90deg,#60a5fa 0%,#2563eb 100%)',
+          border: 'none',
+          borderRadius: 8,
+          boxShadow: '0 2px 8px #2563eb22',
+          cursor: 'pointer',
+          transition: 'background 0.2s',
+          marginRight: 0,
+          marginBottom: 0,
+        }}>
+          上传JSON文件
+        </label>
+        <input
+          type="file"
+          id="file-upload"
+          accept=".json"
+          className="hidden"
+          onChange={handleFileSelect}
+          style={{ display: 'none' }}
+        />
         {uploading ? (
-          <div className="flex flex-col items-center justify-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 mb-4"></div>
-            <p className="text-lg font-medium text-gray-700">正在处理文件...</p>
-          </div>
+          <div style={{ width: 24, height: 24, border: '3px solid #60a5fa', borderTop: '3px solid #2563eb', borderRadius: '50%', animation: 'spin 1s linear infinite', marginLeft: 8 }}></div>
         ) : (
-          <>
-            <input
-              type="file"
-              id="file-upload"
-              accept=".json"
-              className="hidden"
-              onChange={handleFileSelect}
-              style={{
-                display: 'inline-block',
-                width: '15%',
-                padding: '8px 10px',
-                fontSize: '14px',
-                fontWeight: 'bold',
-                textAlign: 'center',
-                color: '#ffffff',
-                backgroundColor: '#B0E0E6', // 淡蓝色
-                border: 'none',
-                borderRadius: '6px',
-                boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-                cursor: 'pointer',
-                transition: 'background-color 0.3s, transform 0.2s',
-                marginRight: '0.5%',
-                marginBottom: '0.5%',
-              }}
-            />
-          </>
+          <span style={{ marginLeft: 8 }}>或拖拽上传</span>
         )}
       </div>
     </div>
