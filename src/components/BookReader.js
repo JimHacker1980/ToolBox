@@ -163,7 +163,6 @@ const BookReader = () => {
                   marginLeft: 0,
                   wordBreak: 'break-word',
                 }}>
-                  <b>总结：</b>
                   <ReactMarkdown>{para.总结 || '无'}</ReactMarkdown>
                 </div>
               </div>
